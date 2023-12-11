@@ -33,4 +33,9 @@ public:
   std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
 };
 
+class Scan_To_Get_OPTBPK_No_Normalize: public Get_BPK {
+public:
+  Scan_To_Get_OPTBPK_No_Normalize(Env *_env) : Get_BPK(_env) {}
+  std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
+};
 #endif

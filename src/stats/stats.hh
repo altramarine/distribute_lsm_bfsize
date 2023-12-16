@@ -11,6 +11,9 @@
 const double log_2_squared = pow(log(2), 2);
 double evaluate_fpr(const double bpk);
 
+inline double evaluate_fpr(const double bpk) {
+  return exp( - (bpk) * log_2_squared);
+}
 
 struct DbStats {
   uint32_t fst_level_with_entries = 0;
@@ -27,7 +30,7 @@ struct DbStats {
     for(auto iter = fileID2fp_queries.begin(); iter!=fileID2fp_queries.end(); iter ++) {
       fpr += iter->second * evaluate_fpr(fileID2bpk.at(iter->first));
     }
-    return fpr;
+    return fpr / num_total_fp_queries;
   }
 };
 

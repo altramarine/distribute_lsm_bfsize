@@ -9,10 +9,6 @@
 
 using namespace std;
 
-double evaluate_fpr(const double bpk) {
-  return exp( - (bpk) * log_2_squared);
-}
-
 unordered_map<uint64_t, double> Scan_To_Get_OPTBPK::GetOptBPK(DbStats db_stats) {
   
   if (db_stats.num_levels <= 1) return {}; // do nothing when L <= 1
@@ -20,7 +16,7 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK::GetOptBPK(DbStats db_stats) 
   // solve \sum - ln p_i / (ln 2)^2 * n_i = M where n_i is the number of entries per file
   // plugged with Lagrange multiplier we have p_i * z_i / n_i should be a constant C where z_i is the number of non-existing
   // queries per file. Let C = p_i * z_i / n_i, we try to solve C first and then calculate p_i per file
-  std:: cout << "Total memory: " << total_filter_memory << std::endl;
+  // std:: cout << "Total memory: " << total_filter_memory << std::endl;
   // let S = \sum (ln n_i / z_i) * n_i, we have - (\sum z_i) * C - S = M * (ln 2)^2
 
   // p_i refers to the false positive rate of the i-th file, fp_queries represent the number of empty queries
@@ -71,7 +67,7 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK::GetOptBPK(DbStats db_stats) 
     fileID2bpk.emplace(fileID, 0.0);
     C = -(total_filter_memory * log_2_squared + S) / num_entries_with_fp_queries; // updated C
     entries_over_fp_with_fileID.pop();
-    std::cerr << "log(entries_over_fp_with_fileID.top().first) + C : " << std::log(entries_over_fp_with_fileID.top().first) + C << std::endl;
+    // std::cerr << "log(entries_over_fp_with_fileID.top().first) + C : " << std::log(entries_over_fp_with_fileID.top().first) + C << std::endl;
   }
   double bpk = 0.0;
   double final_total_memory = 0.0;
@@ -98,7 +94,7 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK_No_Normalize::GetOptBPK(DbSta
   // solve \sum - ln p_i / (ln 2)^2 * n_i = M where n_i is the number of entries per file
   // plugged with Lagrange multiplier we have p_i * z_i / n_i should be a constant C where z_i is the number of non-existing
   // queries per file. Let C = p_i * z_i / n_i, we try to solve C first and then calculate p_i per file
-  std:: cout << "Total memory: " << total_filter_memory << std::endl;
+  // std:: cout << "Total memory: " << total_filter_memory << std::endl;
   // let S = \sum (ln n_i / z_i) * n_i, we have - (\sum z_i) * C - S = M * (ln 2)^2
 
   // p_i refers to the false positive rate of the i-th file, fp_queries represent the number of empty queries
@@ -144,7 +140,7 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK_No_Normalize::GetOptBPK(DbSta
     C = -(total_filter_memory * log_2_squared + S) / num_entries_with_fp_queries; // updated C
     entries_over_fp_with_fileID.pop();
 
-    std::cerr << "log(entries_over_fp_with_fileID.top().first) + C : " << std::log(entries_over_fp_with_fileID.top().first) + C << std::endl;
+    // std::cerr << "log(entries_over_fp_with_fileID.top().first) + C : " << std::log(entries_over_fp_with_fileID.top().first) + C << std::endl;
   }
   double bpk = 0.0;
   double final_total_memory = 0.0;
@@ -173,7 +169,7 @@ unordered_map<uint64_t, double> Method_Of_Monkey::GetOptBPK(DbStats db_stats) {
   // queries per file. Let C = p_i * z_i / n_i, we try to solve C first and then calculate p_i per file
   unordered_map<uint64_t, double> fileID2bpk;
   int files = db_stats.num_files;
-  std:: cout << "Total memory: " << total_filter_memory << std::endl;
+  // std:: cout << "Total memory: " << total_filter_memory << std::endl;
   double R = 0;
   for (auto iter = db_stats.fileID2entries.begin(); iter != db_stats.fileID2entries.end(); iter++) {
     if (iter == db_stats.fileID2entries.begin()) {

@@ -7,6 +7,11 @@
 #include <unordered_map>
 #include "envir/env.hh"
 
+
+const double log_2_squared = pow(log(2), 2);
+double evaluate_fpr(const double bpk);
+
+
 struct DbStats {
   uint32_t fst_level_with_entries = 0;
   uint32_t num_levels = 0;
@@ -17,8 +22,14 @@ struct DbStats {
   std::vector<uint64_t> entries_in_level0;
   std::unordered_map<uint64_t, uint64_t> fileID2fp_queries; // number of false positive queries for a fileID
   std::unordered_map<uint64_t, uint64_t> fileID2entries;    // number of entries for a fileID
+  double evaluate_total_fpr(const std::unordered_map<uint64_t, double> &fileID2bpk) {
+    double fpr = 0.0;
+    for(auto iter = fileID2fp_queries.begin(); iter!=fileID2fp_queries.end(); iter ++) {
+      fpr += iter->second * evaluate_fpr(fileID2bpk.at(iter->first));
+    }
+    return fpr;
+  }
 };
-
 
 class Get_BPK {
 public:
@@ -38,4 +49,11 @@ public:
   Scan_To_Get_OPTBPK_No_Normalize(Env *_env) : Get_BPK(_env) {}
   std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
 };
+
+class Method_Of_Monkey: public Get_BPK {
+  public:
+  Method_Of_Monkey(Env *_env) : Get_BPK(_env) {}
+  std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
+};
+
 #endif

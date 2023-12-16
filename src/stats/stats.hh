@@ -6,13 +6,14 @@
 #include <algorithm>
 #include <unordered_map>
 #include "envir/env.hh"
+#include <cmath>
 
 
-const double log_2_squared = pow(log(2), 2);
+const double log_2_squared = std::pow(std::log(2), 2);
 double evaluate_fpr(const double bpk);
 
 inline double evaluate_fpr(const double bpk) {
-  return exp( - (bpk) * log_2_squared);
+  return std::exp( - (bpk) * log_2_squared);
 }
 
 struct DbStats {

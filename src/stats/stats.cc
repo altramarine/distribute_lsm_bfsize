@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include "stats/stats.hh"
 #include "envir/env.hh"
-#include "random"
+#include <cmath>
 
 using namespace std;
 
@@ -41,7 +41,6 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK::GetOptBPK(DbStats db_stats) 
       }      
     }
   }
-  const double log_2_squared = pow(std::log(2), 2);
   double num_total_fp_queries = db_stats.num_total_fp_queries;
   double C = -(total_filter_memory * log_2_squared + S) * 1.0 / num_entries_with_fp_queries; 
   // C = ln(lambda), require: lambda * z_i / n_i > 0.0
@@ -119,7 +118,6 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK_No_Normalize::GetOptBPK(DbSta
       }      
     }
   }
-  const double log_2_squared = pow(std::log(2), 2);
   double C = -(total_filter_memory * log_2_squared + S) * 1.0 / num_entries_with_fp_queries; // C = ln(lambda), C < 0 required
 
   // final bpk assignments are stored in fileID2bpk

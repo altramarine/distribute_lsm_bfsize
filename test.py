@@ -1,18 +1,31 @@
 import os
 import pandas as pd
-root_dir = ".\\file-access-exp-data"
+root_dir = ".\\varyN_bpk6_E128_ED_Q4M"
 dir_lists_1 = os.listdir(root_dir)
 print(dir_lists_1)
 
+BPK = [2, 4, 6, 8, 16, 32]
+
 stats = {
   "test": [],
-  "workload": [],
-  "time_monkey": [],
-  "time_scan": [],
-  "fpr_monkey": [],
   "fname": [],
-  "fpr_scan": []
+  "workload": [],
+  "bpk": [],
+  "fpr_monkey": [],
+  "fpr_binarysearch": [],
+  "fpr_scan": [],
+  "t_monkey": [], 
+  "t_binarysearch": [],
+  "t_scan": []
 }
+attributes = [
+  "fpr_monkey",
+  "fpr_binarysearch",
+  "fpr_scan",
+  "t_monkey", 
+  "t_binarysearch",
+  "t_scan"
+]
 
 for file in dir_lists_1:
   workload_name = os.path.join(root_dir, file)
@@ -21,24 +34,25 @@ for file in dir_lists_1:
     test_name = os.path.join(workload_name, tests)
     dir_lists_3 = os.listdir(test_name)
     for nfile in dir_lists_3:
-      file_name = os.path.join(test_name, nfile)
-      print(file_name)
-      os.system(f".\\build\\Release\\main.exe -f {file_name} 2> temp.out")
-      df = pd.read_csv("temp.out", sep=':', header=None)
-      print(df)
-      stats["fpr_monkey"].append(df[1][0])
-      stats["fpr_scan"].append(df[1][1])
-      stats["time_monkey"].append(df[1][2])
-      stats["time_scan"].append(df[1][3])
-      stats["test"].append(tests)
-      stats["fname"].append(nfile)
-      stats["workload"].append(file)
-      df = pd.DataFrame(data=stats)
-      print(df)
-      df.to_csv("output/stats.csv")
-      # df = pd.DataFrame(data=stats)
-      # print(df)
-# print(stats)
+      for bpk in BPK:
+        file_name = os.path.join(test_name, nfile)
+        print(file_name)
+        os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} 2> temp.out")
+        df = pd.read_csv("temp.out", sep=':', header=None)
+        print(df)
+        for i,key in enumerate(attributes):
+          print(key)
+          stats[key].append(df[1][i])
+        stats["test"].append(tests)
+        stats["fname"].append(nfile)
+        stats["workload"].append(file)
+        stats["bpk"].append(bpk)
+        df = pd.DataFrame(data=stats)
+        print(df)
+        df.to_csv("output/stats.csv")
+        # df = pd.DataFrame(data=stats)
+        # print(df)
+  # print(stats)
 
 df = pd.DataFrame(data=stats)
 print(df)

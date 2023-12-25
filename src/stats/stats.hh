@@ -31,6 +31,7 @@ struct DbStats {
     for(auto iter = fileID2fp_queries.begin(); iter!=fileID2fp_queries.end(); iter ++) {
       fpr += iter->second * evaluate_fpr(fileID2bpk.at(iter->first));
     }
+    if(num_total_fp_queries == 0.0f) return 1.0f;
     return fpr / num_total_fp_queries;
   }
 };
@@ -57,6 +58,12 @@ public:
 class Method_Of_Monkey: public Get_BPK {
   public:
   Method_Of_Monkey(Env *_env) : Get_BPK(_env) {}
+  std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
+};
+
+class Binary_Search_Method: public Get_BPK {
+  public:
+  Binary_Search_Method(Env *_env) : Get_BPK(_env) {}
   std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
 };
 

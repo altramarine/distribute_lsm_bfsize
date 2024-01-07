@@ -67,4 +67,10 @@ class Binary_Search_Method: public Get_BPK {
   std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
 };
 
+class Scan_To_Get_OPTBPK_Debug: public Get_BPK {
+public:
+  Scan_To_Get_OPTBPK_Debug(Env *_env) : Get_BPK(_env) {}
+  std::unordered_map<uint64_t, double> GetOptBPK(DbStats db_stats);
+};
+
 #endif

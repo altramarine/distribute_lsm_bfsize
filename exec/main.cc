@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
   int rounds = psr.get<int>("rounds");
   int __bpk__ = psr.get<int>("bytesperkey");
   if(__bpk__ != -1) {
-    env.bits_per_key;
+    env.bits_per_key = __bpk__;
   }
   // std::cerr << "start" << std::endl;
   Get_BPK *p = static_cast<Get_BPK*> (new Method_Of_Monkey(&env));
@@ -98,4 +98,6 @@ int main(int argc, char **argv) {
   std::cerr << "avgTime Monkey:        " << total_time_p / rounds << std::endl;
   std::cerr << "avgTime BinarySearch:  " << total_time_p1 / rounds << std::endl;
   std::cerr << "avgTime ScanNormalized:" << total_time_p2 / rounds << std::endl;
+  Get_BPK *px = static_cast<Get_BPK*> (new Scan_To_Get_OPTBPK_Debug(&env));
+  px->GetOptBPK(stats);
 }

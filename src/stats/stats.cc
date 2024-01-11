@@ -54,6 +54,7 @@ unordered_map<uint64_t, double> Scan_To_Get_OPTBPK_Debug::GetOptBPK(DbStats db_s
     for (auto iter = db_stats.fileID2entries.begin(); iter != db_stats.fileID2entries.end(); iter++) {
       fileID2bpk.emplace(iter->first, _env->bits_per_key);
     }
+    std::cerr << "loop_cnt:              " << 0 << std::endl;
     return fileID2bpk;
   }
   // Calculating S = \sum (ln z_i / n_i) * z_i

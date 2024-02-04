@@ -1,7 +1,17 @@
 import os
 import re
 import pandas as pd
-root_dir = ".\\varyN_bpk6_E128_ED_Q4M"
+import platform
+
+__plat__ = platform.system().lower()
+
+if __plat__ == 'windows':
+  root_dir = ".\\varyN_bpk6_E128_ED_Q4M"
+elif __plat__ == 'linux':
+  root_dir = "./varyN_bpk6_E128_ED_Q4M"
+else:
+  print("Unsupported System")
+  exit()
 dir_lists_1 = os.listdir(root_dir)
 print(dir_lists_1)
 
@@ -52,7 +62,11 @@ for file in dir_lists_1:
         file_name = os.path.join(test_name, nfile)
         print(f'n = {n}*1e6 testing: {nfile} with bpk {bpk}, ')
         # os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk}")
-        os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} 2> temp.out")
+        if __plat__ == 'windows':
+          os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} 2> temp.out")
+        elif __plat__ == 'linux':
+          os.system(f"./build/main -f {file_name} -b {bpk} 2> temp.out")
+        # os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} 2> temp.out")
         df = pd.read_csv("temp.out", sep=':', header=None)
         print(df)
         for i,key in enumerate(attributes):

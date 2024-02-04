@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 # mpl.rcParams['text.usetex'] = True
 
-root_dir = ".\\varyN_bpk6_E128_ED_Q4M"
+root_dir = "./varyN_bpk6_E128_ED_Q4M"
 BPK = [1, 2, 3, 4, 5, 6, 7, 8]
 dir_lists_1 = os.listdir(root_dir)
 # Zlist = ["Z0.0_ZD0_query_stats.txt", "Z0.25_ZD0_query_stats.txt", "Z0.5_ZD0_query_stats.txt", "Z0.75_ZD0_query_stats.txt", "Z1.0_ZD0_query_stats.txt"]

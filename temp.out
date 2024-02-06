@@ -1,7 +1,7 @@
 avgFpr Monkey:         0.0109902
 avgFpr BinarySearch:   0.0109902
 avgFpr ScanNormalized: 0.0109902
-avgTime Monkey:        200.894
-avgTime BinarySearch:  0.00253722
-avgTime ScanNormalized:0.00211057
+avgTime Monkey:        28.646
+avgTime BinarySearch:  0.000407772
+avgTime ScanNormalized:0.000340627
 loop_cnt:              0

@@ -16,6 +16,7 @@ df = pd.read_csv("output/stats.csv")
 print(df)
 
 algos = ["monkey", "binarysearch", "scan"]
+algoname = ["gradiant descent", "binary search", "scan"]
 lines = ["--", "-.", "-"]
 def plot_for_n_as_xaxis_split_bpk():
   plt.figure(f'run_for_n, split_n_bpk',figsize=(12 * 3, 9 * 8))
@@ -50,8 +51,42 @@ def plot_for_n_as_xaxis_split_bpk():
   # plt.show()
   plt.savefig("./fig/split_bpk.png")
 
-plot_for_n_as_xaxis_split_bpk()
 
+
+def plot_for_linear_plot(bpk: int, zd = 0):
+  allZ = [0.0, 0.5, 1.0]
+  length = len(allZ)
+  ____uniform = 'uniform'
+  ____zipf ='zipf'
+  plt.figure(f'z = [0.0, 0.5, 1.0], {____uniform if zd==0 else ____zipf}, bpk = {bpk}', figsize=(12 * length, 9 * 1))
+  ii = 0
+  for z in allZ:
+    ii += 1
+    _df = df[df["bpk"] == bpk][df["ZD"] == zd][df["Z"] == z]
+    for i in range(3):
+      algo = algos[i]
+      name = algoname[i]
+      line = lines[i]
+      x = []
+      y = []
+      for n in Ns:
+        if(len(_df[_df["N"] == n]) > 0):
+          _x = n;
+          _y = np.average(_df[_df["N"] == n][f't_{algo}'])
+          x.append(_x)
+          y.append(_y)
+      plt.subplot(1, length, ii)
+      plt.title(f"Z={z}")
+      # plt.plot(x, y, linestyle = line, label = f"{name}")
+      plt.plot(x, y, label = f"{name}")
+      plt.yscale("log")
+      plt.xlabel("n(M)")
+      plt.ylabel("time")
+      # plt.ylim(0)
+    # for N, ____df in ___df.groupby(___df["N"]):
+    plt.subplot(1, length, ii).legend()
+  plt.savefig(f"./fig/{____uniform if zd==0 else ____zipf},bpk={bpk}.png")
+  # plt.savefig("./fig/split_n.png")
 
 def plot_for_bpk_as_xaxis_split_n():
   plt.figure(f'run_for_n, split_n_bpk',figsize=(12 * 3, 9 * 6))
@@ -87,84 +122,13 @@ def plot_for_bpk_as_xaxis_split_n():
   plt.savefig("./fig/split_n.png")
   # plt.show()
 
-plot_for_bpk_as_xaxis_split_n()
 
-# for x in dir_lists_1:
-#   Z = df[df["workload"] == x];
-#   for key, val in Z.groupby(Z['fname']):  
-#     plt.figure(f'{x}-{key}',figsize=(8 * 3,6))
-#     plt.subplot(1, 3, 1)
-#     X_monkey = []
-#     Y_monkey = []
-#     X_scan = []
-#     Y_scan = []
-    
-#     monkey_t = []
-#     binary_t= []
-#     scan_t = []
-#     for bpk in BPK:
-#       H = val[val["bpk"] == bpk]
-#       monkey_t.append(np.average(H['t_monkey']))
-#       binary_t.append(np.average(H['t_binarysearch']))
-#       scan_t.append(np.average(H['t_scan']))
-#     plt.plot(BPK, monkey_t, label=f'monkey-{key}')
-#     # plt.plot(BPK, binary_t, label=f'binary-{key}')
-#     # plt.plot(BPK, scan_t, label=f'scan-{key}')
-#     plt.xlabel("bpk")
-#     plt.ylabel("time")
-#     # plt.xscale('log')
-    
-#     plt.legend()
-#   # plt.show()
-  
-  
-#     plt.subplot(1, 3, 2)
-#     Z = df[df["workload"] == x];
-#     print(Z)
-#     X_monkey = []
-#     Y_monkey = []
-#     X_scan = []
-#     Y_scan = []
-#     monkey_t = []
-#     binary_t= []
-#     scan_t = []
-#     for bpk in BPK:
-#       H = val[val["bpk"] == bpk]
-#       monkey_t.append(np.average(H['t_monkey']))
-#       binary_t.append(np.average(H['t_binarysearch']))
-#       scan_t.append(np.average(H['t_scan']))
-#     # plt.plot(BPK, monkey_t, label=f'monkey-{key}')
-#     plt.plot(BPK, binary_t, label=f'binary-{key}')
-#     # plt.plot(BPK, scan_t, label=f'scan-{key}')
-#     plt.xlabel("bpk")
-#     plt.ylabel("time")
-#     # plt.xscale('log')
-    
-#     plt.legend()
-#   # plt.show()
 
-#     plt.subplot(1, 3, 3)
-#     Z = df[df["workload"] == x];
-#     print(Z)
-#     X_monkey = []
-#     Y_monkey = []
-#     X_scan = []
-#     Y_scan = []
-#     monkey_t = []
-#     binary_t= []
-#     scan_t = []
-#     for bpk in BPK:
-#       H = val[val["bpk"] == bpk]
-#       monkey_t.append(np.average(H['t_monkey']))
-#       binary_t.append(np.average(H['t_binarysearch']))
-#       scan_t.append(np.average(H['t_scan']))
-#     # plt.plot(BPK, monkey_t, label=f'monkey-{key}')
-#     # plt.plot(BPK, binary_t, label=f'binary-{key}')
-#     plt.plot(BPK, scan_t, label=f'scan-{key}')
-#     plt.xlabel("bpk")
-#     plt.ylabel("time")
-#     # plt.xscale('log')
-#     plt.legend()
-#     # plt.rcParams['figure.figsize'] = [8000, 2000]
-#     # plt.show()
-#     plt.savefig(f'./fig/{x}---{key}.png')
+def main():
+  for bpk in range(1, 8 + 1):
+    plot_for_linear_plot(bpk = bpk, zd = 0)
+  plot_for_n_as_xaxis_split_bpk()
+  plot_for_bpk_as_xaxis_split_n()
+
+if __name__ == "__main__":
+  main()

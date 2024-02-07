@@ -58,9 +58,10 @@ def plot_for_linear_plot(bpk: int, zd = 0):
   length = len(allZ)
   ____uniform = 'uniform'
   ____zipf ='zipf'
-  plt.figure(f'z = [0.0, 0.5, 1.0], {____uniform if zd==0 else ____zipf}, bpk = {bpk}', figsize=(12 * length, 9 * 1))
+  # plt.figure(f'z = [0.0, 0.5, 1.0], {____uniform if zd==0 else ____zipf}, bpk = {bpk}', figsize=(12 * length, 9 * 1))
   ii = 0
   for z in allZ:
+    plt.figure(f'Z{z:.1f}_{____uniform if zd==0 else ____zipf}_bpk{bpk}', figsize = (12, 9))
     ii += 1
     _df = df[df["bpk"] == bpk][df["ZD"] == zd][df["Z"] == z]
     for i in range(3):
@@ -75,7 +76,7 @@ def plot_for_linear_plot(bpk: int, zd = 0):
           _y = np.average(_df[_df["N"] == n][f't_{algo}'])
           x.append(_x)
           y.append(_y)
-      plt.subplot(1, length, ii)
+      # plt.subplot(1, length, ii)
       plt.title(f"Z={z}")
       # plt.plot(x, y, linestyle = line, label = f"{name}")
       plt.plot(x, y, label = f"{name}")
@@ -84,8 +85,10 @@ def plot_for_linear_plot(bpk: int, zd = 0):
       plt.ylabel("time")
       # plt.ylim(0)
     # for N, ____df in ___df.groupby(___df["N"]):
-    plt.subplot(1, length, ii).legend()
-  plt.savefig(f"./fig/{____uniform if zd==0 else ____zipf},bpk={bpk}.png")
+    plt.legend()
+    # plt.subplot(1, length, ii).legend()
+    plt.savefig(f"./fig/split/Z{z:.1f}_{____uniform if zd==0 else ____zipf}_bpk{bpk}.png")
+  # plt.savefig(f"./fig/{____uniform if zd==0 else ____zipf},bpk={bpk}.png")
   # plt.savefig("./fig/split_n.png")
 
 def plot_for_bpk_as_xaxis_split_n():

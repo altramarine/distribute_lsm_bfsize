@@ -5,6 +5,7 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 
 # mpl.rcParams['text.usetex'] = True
+plt.rc('font',family='Linux Libertine Mono', size=15)
 
 root_dir = "./varyN_bpk6_E128_ED_Q4M"
 BPK = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -61,7 +62,7 @@ def plot_for_linear_plot(bpk: int, zd = 0):
   # plt.figure(f'z = [0.0, 0.5, 1.0], {____uniform if zd==0 else ____zipf}, bpk = {bpk}', figsize=(12 * length, 9 * 1))
   ii = 0
   for z in allZ:
-    plt.figure(f'Z{z:.1f}_{____uniform if zd==0 else ____zipf}_bpk{bpk}', figsize = (12, 9))
+    plt.figure(f'Z{z:.1f}_{____uniform if zd==0 else ____zipf}_bpk{bpk}', figsize = (8, 6))
     ii += 1
     _df = df[df["bpk"] == bpk][df["ZD"] == zd][df["Z"] == z]
     for i in range(3):
@@ -72,16 +73,17 @@ def plot_for_linear_plot(bpk: int, zd = 0):
       y = []
       for n in Ns:
         if(len(_df[_df["N"] == n]) > 0):
-          _x = n;
+          _x = n * 1000000;
           _y = np.average(_df[_df["N"] == n][f't_{algo}'])
           x.append(_x)
           y.append(_y)
       # plt.subplot(1, length, ii)
-      plt.title(f"Z={z}")
+      plt.title(f"Z{z:.1f}_{____uniform if zd==0 else ____zipf}_bpk{bpk}")
       # plt.plot(x, y, linestyle = line, label = f"{name}")
       plt.plot(x, y, label = f"{name}")
+      plt.ticklabel_format(axis="x", style="sci", scilimits=(6,6))
       plt.yscale("log")
-      plt.xlabel("n(M)")
+      plt.xlabel("n")
       plt.ylabel("time")
       # plt.ylim(0)
     # for N, ____df in ___df.groupby(___df["N"]):

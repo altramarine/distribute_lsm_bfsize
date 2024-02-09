@@ -83,7 +83,7 @@ def plot_for_linear_plot(bpk: int, zd = 0):
         if(len(_df[_df["N"] == n]) > 0):
           _x = int(round((n * 1000000)/entries_per_file)) 
           _y = np.average(_df[_df["N"] == n][f't_{algo}'])
-          _h = np.average(_df[_df["N"] == n][f'nfile'])
+          _h = np.average(_df[_df["N"] == n][f'n_file'])
           # x.append(_x)
           x.append(_h)
           y.append(_y)

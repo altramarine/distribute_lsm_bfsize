@@ -100,4 +100,5 @@ int main(int argc, char **argv) {
   std::cerr << "avgTime ScanNormalized:" << total_time_p2 / rounds << std::endl;
   Get_BPK *px = static_cast<Get_BPK*> (new Scan_To_Get_OPTBPK_Debug(&env));
   px->GetOptBPK(stats);
+  std::cerr << "number of Files:       " << stats.num_files << std::endl;
 }

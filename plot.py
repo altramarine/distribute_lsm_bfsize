@@ -79,10 +79,13 @@ def plot_for_linear_plot(bpk: int, zd = 0):
       x = []
       y = []
       for n in Ns:
+        print(n)
         if(len(_df[_df["N"] == n]) > 0):
-          _x = int(round((n * 1000000)/entries_per_file))
+          _x = int(round((n * 1000000)/entries_per_file)) 
           _y = np.average(_df[_df["N"] == n][f't_{algo}'])
-          x.append(_x)
+          _h = np.average(_df[_df["N"] == n][f'nfile'])
+          # x.append(_x)
+          x.append(_h)
           y.append(_y)
       # plt.subplot(1, length, ii)
       #plt.title(f"Z{z:.1f}_{____uniform if zd==0 else ____zipf}_bpk{bpk}")

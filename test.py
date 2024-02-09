@@ -31,7 +31,8 @@ stats = {
   "t_monkey": [], 
   "t_binarysearch": [],
   "t_scan": [],
-  "zeroes": []
+  "zeroes": [],
+  "n_file": []
 }
 attributes = [
   "fpr_monkey",
@@ -40,7 +41,8 @@ attributes = [
   "t_monkey", 
   "t_binarysearch",
   "t_scan",
-  "zeroes"
+  "zeroes",
+  "n_file"
 ]
 
 for file in dir_lists_1:

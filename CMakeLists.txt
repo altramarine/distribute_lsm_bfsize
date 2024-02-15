@@ -9,7 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 # set(PROJ ${PROJECT_SOURCE_DIR}/src/*.cc)
 # add_compile_options("-Wall")
-add_compile_options("-O3")
+add_compile_options("-O2")
 
 file(GLOB_RECURSE everything ./src/*.cc)
 add_executable(main ${PROJECT_SOURCE_DIR}/exec/main.cc ${everything})

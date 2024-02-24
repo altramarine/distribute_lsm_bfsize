@@ -20,7 +20,7 @@ df = pd.read_csv("output/stats.csv")
 print(df)
 
 algos = ["monkey", "binarysearch", "scan"]
-algoname = ["gradiant descent", "binary search", "scan"]
+algoname = ["gradient descent", "binary search", "scan"]
 lines = ["--", "-.", "-"]
 linecolors = ["black", "blue", "red"]
 linemarkers = ["o", "s", "x"]

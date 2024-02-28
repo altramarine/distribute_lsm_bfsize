@@ -357,6 +357,16 @@ unordered_map<uint64_t, double> Binary_Search_Method::GetOptBPK(DbStats db_stats
     int mid = (l + r) / 2;
     int id = entries_over_fp_with_fileID[mid].first;
     double C = - (total_filter_memory * log_2_squared + ss[mid]) / n_entries[mid];
+    // double kthis = 
+    bool flag = 0;
+    if(mid + 1 < entries_over_fp_with_fileID.size()) {
+      double knext = std::log(entries_over_fp_with_fileID[mid + 1].first) + C;
+      if(knext <= 0.0) {
+        l = mid;
+        flag = 1;
+      } // corner case when mid + 1 is satisfied.
+    } 
+    if(flag) continue;
     if(std::log(entries_over_fp_with_fileID[mid].first) + C > 0.0) {
       r = mid;
     } else {
@@ -369,6 +379,7 @@ unordered_map<uint64_t, double> Binary_Search_Method::GetOptBPK(DbStats db_stats
   unordered_set<uint64_t> fileIDwithNobpk;
   for(size_t i = l + 1; i < entries_over_fp_with_fileID.size(); i ++) {
     fileIDwithNobpk.insert(entries_over_fp_with_fileID[i].second);
+    // fprintf(stdout, "delete ==", entries_over_fp_with_fileID[i].second);
   }
   if(entries_over_fp_with_fileID.size() == 0) {
     for (auto iter = db_stats.fileID2entries.begin(); iter != db_stats.fileID2entries.end(); iter++) {
@@ -378,24 +389,6 @@ unordered_map<uint64_t, double> Binary_Search_Method::GetOptBPK(DbStats db_stats
   }
 
   float C = - (total_filter_memory * log_2_squared + ss[l]) / n_entries[l];
-  
-  // std::cerr << l << "??" << std::endl;
-  // Calculating S = \sum (ln z_i / n_i) * z_i
-  // while (
-  //     !entries_over_fp_with_fileID.empty() && 
-  //     std::log(entries_over_fp_with_fileID.top().first) + C > 0.0 // this implies current ln(z_i / n_i * lambda) > 1.0
-  //   ) {
-  //   auto topp = entries_over_fp_with_fileID.top();
-  //   uint64_t fileID = topp.second;
-  //   S -= std::log(entries_over_fp_with_fileID.top().first * 1.0) * db_stats.fileID2entries.at(fileID);
-  //   num_entries_with_fp_queries -= db_stats.fileID2entries.at(fileID);
-  //   fileIDwithNobpk.insert(fileID);
-  //   fileID2bpk.emplace(fileID, 0.0);
-  //   C = -(total_filter_memory * log_2_squared + S) / num_entries_with_fp_queries; // updated C
-  //   entries_over_fp_with_fileID.pop();
-
-  //   // std::cerr << "log(entries_over_fp_with_fileID.top().first) + C : " << std::log(entries_over_fp_with_fileID.top().first) + C << std::endl;
-  // }
   double bpk = 0.0;
   double final_total_memory = 0.0;
   for (auto iter = db_stats.fileID2entries.begin(); iter != db_stats.fileID2entries.end(); iter++) {

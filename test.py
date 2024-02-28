@@ -67,7 +67,7 @@ for file in dir_lists_1:
         if __plat__ == 'windows':
           os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} 2> temp.out")
         elif __plat__ == 'linux':
-          os.system(f"./build/main -f {file_name} -b {bpk} 2> temp.out")
+          os.system(f"./build/main -f {file_name} -b {bpk} >result.out 2> temp.out")
         # os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} 2> temp.out")
         df = pd.read_csv("temp.out", sep=':', header=None)
         print(df)
@@ -81,6 +81,11 @@ for file in dir_lists_1:
         stats["fname"].append(nfile)
         stats["workload"].append(file)
         stats["bpk"].append(bpk)
+        if abs(stats["fpr_scan"][-1] - stats["fpr_binarysearch"][-1]) > 1e-3: 
+          with open("log.txt", "a+") as f:
+            f.write(f"[ERROR]! gd:{stats['fpr_monkey'][-1]} binary:{stats['fpr_binarysearch'][-1]} scan:{stats['fpr_scan'][-1]}\n")
+            f.write(fname + "\n")
+          # exit()
         df = pd.DataFrame(data=stats)
         print(df)
         df.to_csv("output/stats.csv")

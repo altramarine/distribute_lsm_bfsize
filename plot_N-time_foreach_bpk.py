@@ -30,7 +30,7 @@ mpl.rcParams.update({'font.size': 23})
 Ns = [1, 2, 4, 8, 16, 32]
 
 df = pd.read_csv("output/stats.csv")
-print(df)
+# print(df)
 
 algos = ["monkey", "binarysearch", "scan"]
 algoname = ["gradient descent", "binary search", "scan"]
@@ -59,16 +59,12 @@ def plot_for_linear_plot(bpk: int, zd = 0):
       x = []
       y = []
       for n, dfN in _df.groupby(_df["N"]):
-        print(f"plot: for z={z}, zd={zd}, bpk={bpk}, found n={n}")
-        print(n, _df[_df["N"] == n][f'n_file'])
         if(len(_df[_df["N"] == n]) > 0):
           _x = int(round((n * 1000000)/entries_per_file)) 
           _y = np.average(_df[_df["N"] == n][f't_{algo}'])
           _h = np.average(_df[_df["N"] == n][f'n_file'])
           x.append(_h)
           y.append(_y)
-          print(_h, _y)
-      print(x, y)
       plt.plot(x, y, label = f"{name}", color=linecolors[i], marker=linemarkers[i], markersize=16, fillstyle='none')
       plt.ticklabel_format(axis="x", style="sci", scilimits=(0,6))
       plt.yscale("log")

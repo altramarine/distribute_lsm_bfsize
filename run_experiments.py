@@ -68,41 +68,49 @@ attributes = [
 
 bar = lambda percent: "#" * int(50 * percent) + "." * (50 - int(50 * percent))
 cnt_dir_list_1 = 0
+
+tot_file = 0
+
 for file in dir_lists_1:                            ## scale?x
-  cnt_dir_list_1 = cnt_dir_list_1 + 1
-  
   pattern = re.compile(r'\d+x')
   n = int(pattern.findall(file)[0][:-1])
   workload_name = os.path.join(root_dir, file)
   dir_lists_2 = os.listdir(workload_name)
-
-  cnt_dir_list_2 =0 
   for tests in dir_lists_2:                         ## test1 - test3
-    cnt_dir_list_2 = cnt_dir_list_2 + 1
-
-    # os.system('cls' if os.name == 'nt' else 'clear')
-    sys.stdout.write(f"\r{file:<10}:{bar(cnt_dir_list_1 / len(dir_lists_1))} | {tests:<10}:{bar(cnt_dir_list_2 / len(dir_lists_2))}")
-
     test_name = os.path.join(workload_name, tests)
     dir_lists_3 = os.listdir(test_name)
-
-    cnt_dir_list_3 = 0
     for nfile in dir_lists_3:                       ## Z?_ZD?_query_stats.txt
-      cnt_dir_list_3 = cnt_dir_list_3 + 1
+      pattern3 = re.compile(r'query_stats')
+      if(len(pattern3.findall(nfile)) > 0):
+        # print(nfile)
+        tot_file = tot_file + 1
 
+print(f">> found {tot_file} files")
+
+current_file = 0
+
+for file in dir_lists_1:                            ## scale?x
+  pattern = re.compile(r'\d+x')
+  n = int(pattern.findall(file)[0][:-1])
+  workload_name = os.path.join(root_dir, file)
+  dir_lists_2 = os.listdir(workload_name)
+  for tests in dir_lists_2:                         ## test1 - test3
+    test_name = os.path.join(workload_name, tests)
+    dir_lists_3 = os.listdir(test_name)
+    for nfile in dir_lists_3:                       ## Z?_ZD?_query_stats.txt
       pattern1 = re.compile(r'Z\d+.\d+')
       pattern2 = re.compile(r'ZD\d+')
       z = float(pattern1.findall(nfile)[0][1:])
-      zd = int(pattern2.findall(nfile)[0][2:])   
+      zd = int(pattern2.findall(nfile)[0][2:])
+      pattern3 = re.compile(r'query_stats')
+      file_name = os.path.join(test_name, nfile)
+      if(len(pattern3.findall(nfile)) > 0):
+        current_file = current_file + 1
+        sys.stdout.write(f"\r|{bar(current_file / tot_file)}|({current_file / tot_file * 100:3.2f}%)| Processing {file}/{tests}/{nfile}") 
+      else:
+        continue   
       for bpk in BPK:
-        file_name = os.path.join(test_name, nfile)
-        pattern3 = re.compile(r'query_stats')
-        if(len(pattern3.findall(nfile)) > 0):
-
-          sys.stdout.write(f"\r| {bar(cnt_dir_list_1 / len(dir_lists_1))} ({file:10})| {bar(cnt_dir_list_2 / len(dir_lists_2))} ({tests:10}) {bar(cnt_dir_list_3 / len(dir_lists_3))} working with: {nfile}")
-          print(f'path = {file_name}, n = {n}*1e6 testing: {nfile} with bpk {bpk}.', file=sys.stderr)
-        else:
-          continue
+        print(f'path = {file_name}, n = {n}*1e6 testing: {nfile} with bpk {bpk}.', file=sys.stderr)
         if __plat__ == 'windows':
           os.system(f".\\build\\Release\\main.exe -f {file_name} -b {bpk} -r {args.r} > result.out 2> temp.out")
         elif __plat__ == 'linux':

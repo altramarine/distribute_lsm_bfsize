@@ -1,6 +1,6 @@
 This repo is for testing three methods of distributing bloom filter size.
 
-```test.sh``` is a generic script that will：
+```run_scripts.sh``` is a generic script that will：
   1. compile the testing cpp,
   2. run experiments for given dataset, 
   3. generate plots.
@@ -33,12 +33,12 @@ fileID#N #existing_queries #non-existing_queries
 
 --- 
 
-```test.py``` will scan every file with ```query_stats``` under directory, recording ```scale#x```, ```#test```, ```Z#_ZD#```, and output result to ```output/stats.csv```, where ```Z``` refer to portion of zero queries and ```ZD``` implies the distribution of the queries (0 for uniform, 1 for normal and 3 for zipfian).
+```run_experiments.py``` will scan every file with ```query_stats``` under directory, recording ```scale#x```, ```#test```, ```Z#_ZD#```, and output result to ```output/stats.csv```, where ```Z``` refer to portion of zero queries and ```ZD``` implies the distribution of the queries (0 for uniform, 1 for normal and 3 for zipfian).
 - use ```-b, --bpk``` to specify a list of bpk to test,
 - use ```-r``` to specify #rounds for each testcase,
 - use ```-d``` to specify dataset directory.
 
-```plot.py``` will automatically gather results from same ```Z```, ```ZD``` and ```bpk```, and plot ```#files - execution_time``` graph for every file.
+```plot_N-time_foreach_bpk.py``` will automatically gather results from same ```Z```, ```ZD``` and ```bpk```, and plot ```#files - execution_time``` graph for every file.
 - use ```-b, --bpk``` to specify a list of bpk,
 - use ```-d``` to specify output directories.
 
